@@ -2,7 +2,11 @@ version: '3'
 
 services:
   jellyfin-retitle:
-    build: .
+    build:
+      context: .
+      args:
+        - ALPINE_MIRROR=${ALPINE_MIRROR}
+        - PYPI_MIRROR=${PYPI_MIRROR}
     container_name: jellyfin-retitle
     image: hsojo/jellyfin-retitle
     restart: unless-stopped
