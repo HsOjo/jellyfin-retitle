@@ -6,8 +6,6 @@ from typing import List, Dict
 import requests
 from dotenv import load_dotenv
 
-import helper
-
 load_dotenv()
 
 USER_NAME = os.getenv("USER_NAME")
@@ -34,17 +32,18 @@ def scan(FOLDER_ID=None, callback=None, parent_item=None):
     resp = jellyfin(f'Users/{user_id}/Items', params=dict(
         Fields='Path', ParentId=FOLDER_ID
     )).json()  # type: dict
-    for item in resp.get('Items'):
+    items = resp.get('Items')
+    for index, item in enumerate(sorted(items, key=lambda x: x.get('Path')), start=1):
         item: dict
         item = jellyfin(f'Users/{user_id}/Items/{item.get("Id")}').json()  # type: dict
         if callback:
-            callback(item, parent_item)
+            callback(item, parent_item, item_index=index)
         if item.get('IsFolder'):
             print(datetime.now(), '- scanning:', item.get('Name'))
             scan(item.get('Id'), callback, parent_item=item)
 
 
-def retitle(item: dict, parent_item: dict):
+def retitle(item: dict, parent_item: dict, item_index: int):
     if item.get('IsFolder'):
         return
 
@@ -52,9 +51,8 @@ def retitle(item: dict, parent_item: dict):
     parent_name = parent_item.get('Name')
 
     item_id = item.get('Id')
-    item_path = item.get('Path')
     item_name = item.get('Name')
-    item_index = helper.get_episode_index(item_name, parent_name)
+    item_path = item.get('Path')
     item_filename = os.path.basename(item_path)  # type: str
     [item_filename, item_ext] = os.path.splitext(item_filename)
     item_filename_without_ext = item_filename.removesuffix(item_ext)
