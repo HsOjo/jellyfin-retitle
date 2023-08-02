@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  jellyfin-retitle:
+    build: .
+    container_name: jellyfin-retitle
+    image: hsojo/jellyfin-retitle
+    restart: unless-stopped
+    tty: true
+    environment:
+      - USER_NAME=${USER_NAME}
+      - BASE_URI=${BASE_URI}
+      - API_TOKEN=${API_TOKEN}
+      - TITLE_TEMPLATE=${TITLE_TEMPLATE}
+      - SCAN_INTERVAL=${SCAN_INTERVAL}
