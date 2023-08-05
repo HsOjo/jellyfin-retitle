@@ -2,19 +2,25 @@
 
 This is a Python script for automatically renaming video files in a specific folder in the Jellyfin media server.
 
+## How To Use
+
+1. Install Docker (Compose)
+2. Edit the ```.env``` file. (Copy from .env.example)
+3. Execute ```docker-compose up``` (If as daemon, Add the ```-d``` option.)
+
 ## Parameter Description
 
 The following are the parameters that can be defined and their purposes:
 
-1. USER_NAME: Used to set the username for the Jellyfin media server. Must match an existing username on the Jellyfin server. **This parameter is required.**
+1. `USER_NAME`: Used to set the username for the Jellyfin media server. Must match an existing username on the Jellyfin server. **This parameter is required.**
 
-2. BASE_URI: Used to set the base URI for the Jellyfin server. Typically "http://127.0.0.1:8096". If you are using a different URI, change this parameter accordingly. This parameter is required.
+2. `BASE_URI`: Used to set the base URI for the Jellyfin server. Typically "http://127.0.0.1:8096". If you are using a different URI, change this parameter accordingly. This parameter is required.
 
-3. API_TOKEN: Used to set the Jellyfin API access token. Can be obtained in Jellyfin server under "Settings" > "API" > "API Key". **This parameter is required.**
+3. `API_TOKEN`: Used to set the Jellyfin API access token. Can be obtained in Jellyfin server under "Settings" > "API" > "API Key". **This parameter is required.**
 
-4. TITLE_TEMPLATE: Used to set the new name for the video file, see **Title Template** section for details. This parameter is optional.
+4. `TITLE_TEMPLATE`: Used to set the new name for the video file, see **Title Template** section for details. This parameter is optional.
 
-5. SCAN_INTERVAL: Scan interval in seconds. This parameter specifies the time the script waits after scanning the folder. Default value is 30 seconds. This parameter is optional.
+5. `SCAN_INTERVAL`: Scan interval in seconds. This parameter specifies the time the script waits after scanning the folder. Default value is 30 seconds. This parameter is optional.
 
 When using this script, the above parameters must be set to the correct values and ensure that the Jellyfin server is running during the script's execution.
 
