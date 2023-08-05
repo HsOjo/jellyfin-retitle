@@ -23,7 +23,7 @@ def jellyfin(path, method='get', **kwargs):
     )
 
 
-users = jellyfin(f'Users').json()  # type: List[dict]
+users = jellyfin('Users').json()  # type: List[dict]
 users_name_mapping = {user.get('Name'): user for user in users}  # type: Dict[str, dict]
 user_id = users_name_mapping.get(USER_NAME).get('Id')
 
@@ -35,18 +35,16 @@ def scan(FOLDER_ID=None, callback=None, parent_item=None):
     items = resp.get('Items')
     for index, item in enumerate(sorted(items, key=lambda x: x.get('Path')), start=1):
         item: dict
-        item = jellyfin(f'Users/{user_id}/Items/{item.get("Id")}').json()  # type: dict
-        if callback:
-            callback(item, parent_item, item_index=index)
         if item.get('IsFolder'):
             print(datetime.now(), '- scanning:', item.get('Name'))
             scan(item.get('Id'), callback, parent_item=item)
+        else:
+            item = jellyfin(f'Users/{user_id}/Items/{item.get("Id")}').json()  # type: dict
+            if callback:
+                callback(item, parent_item, item_index=index)
 
 
 def retitle(item: dict, parent_item: dict, item_index: int):
-    if item.get('IsFolder'):
-        return
-
     parent_id = parent_item.get('Id')
     parent_name = parent_item.get('Name')
 
