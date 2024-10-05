@@ -36,6 +36,8 @@ def scan(FOLDER_ID=None, callback=None, parent_item=None):
     for index, item in enumerate(sorted(items, key=lambda x: x.get('Path')), start=1):
         item: dict
         if item.get('IsFolder'):
+            if item.get('Type') == 'ManualPlaylistsFolder':
+                continue
             print(datetime.now(), '- scanning:', item.get('Name'))
             scan(item.get('Id'), callback, parent_item=item)
         else:
