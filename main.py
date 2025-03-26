@@ -52,7 +52,9 @@ def retitle(item: dict, parent_item: dict, item_index: int):
 
     item_id = item.get('Id')
     item_name = item.get('Name')
-    item_path = item.get('Path')
+    item_path = item.get('Path')  # type: str
+    item_path = item_path.replace('\\', '/')
+
     item_filename = os.path.basename(item_path)  # type: str
     [item_filename, item_ext] = os.path.splitext(item_filename)
     item_filename_without_ext = item_filename.removesuffix(item_ext)
